@@ -30,7 +30,20 @@
               <option value="medium" selected>⚡ 中優先度</option>
               <option value="low">🌱 低優先度</option>
             </select>
-            <input id="reminderInput" type="datetime-local" />
+            <div class="reminder-builder" aria-label="リマインダー日時の設定">
+              <div class="year-stepper" aria-label="年の設定">
+                <button type="button" id="yearDown" class="ghost">−</button>
+                <span id="yearDisplay"></span>
+                <button type="button" id="yearUp" class="ghost">＋</button>
+              </div>
+              <select id="monthInput" aria-label="月を選択"></select>
+              <input id="dateInput" type="date" aria-label="日付を選択" />
+              <div class="time-split" aria-label="時間の設定">
+                <select id="hourInput" aria-label="時を選択"></select>
+                <span>:</span>
+                <select id="minuteInput" aria-label="分を選択"></select>
+              </div>
+            </div>
             <button type="submit">追加する</button>
           </div>
         </form>

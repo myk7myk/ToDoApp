@@ -87,38 +87,50 @@ button.ghost {
 }
 
 
-input[type="datetime-local"] {
-  color-scheme: dark;
-  accent-color: var(--accent-2);
+.reminder-builder {
+  display: grid;
+  grid-template-columns: 1.1fr .9fr 1.2fr 1fr;
+  gap: 8px;
+  align-items: center;
 }
 
-input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-  cursor: pointer;
-  opacity: 0.9;
-  filter: invert(88%) sepia(31%) saturate(654%) hue-rotate(116deg) brightness(97%) contrast(95%);
+.year-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 4px;
+  background: rgba(15, 21, 43, .9);
 }
 
-input[type="datetime-local"]::-webkit-datetime-edit,
-input[type="datetime-local"]::-webkit-datetime-edit-fields-wrapper,
-input[type="datetime-local"]::-webkit-datetime-edit-text,
-input[type="datetime-local"]::-webkit-datetime-edit-month-field,
-input[type="datetime-local"]::-webkit-datetime-edit-day-field,
-input[type="datetime-local"]::-webkit-datetime-edit-year-field,
-input[type="datetime-local"]::-webkit-datetime-edit-hour-field,
-input[type="datetime-local"]::-webkit-datetime-edit-minute-field {
+.year-stepper button {
+  min-width: 34px;
+  padding: 6px 8px;
+}
+
+#yearDisplay {
+  font-weight: 700;
   color: var(--text);
+  font-size: .95rem;
 }
 
-input[type="datetime-local"]:focus::-webkit-datetime-edit-month-field,
-input[type="datetime-local"]:focus::-webkit-datetime-edit-day-field,
-input[type="datetime-local"]:focus::-webkit-datetime-edit-year-field,
-input[type="datetime-local"]:focus::-webkit-datetime-edit-hour-field,
-input[type="datetime-local"]:focus::-webkit-datetime-edit-minute-field {
-  background: rgba(3, 244, 209, 0.16);
-  border-radius: 6px;
+#dateInput {
+  color-scheme: dark;
 }
 
-.row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; }
+.time-split {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.time-split span {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.row { display: grid; grid-template-columns: 1fr 2.3fr auto; gap: 10px; }
 .notification-row { margin-top: 12px; display: flex; align-items: center; gap: 10px; color: var(--muted); }
 
 .todo-header { display: flex; justify-content: space-between; align-items: center; }
@@ -154,6 +166,7 @@ input[type="datetime-local"]:focus::-webkit-datetime-edit-minute-field {
 
 @media (max-width: 720px) {
   .row { grid-template-columns: 1fr; }
+  .reminder-builder { grid-template-columns: 1fr; }
   .todo-item { align-items: flex-start; flex-direction: column; }
   .todo-meta { justify-content: flex-start; }
 }

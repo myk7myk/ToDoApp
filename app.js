@@ -4,7 +4,13 @@ const STREAK_KEY = "blaze-streak-v1";
 const todoForm = document.getElementById("todoForm");
 const taskInput = document.getElementById("taskInput");
 const priorityInput = document.getElementById("priorityInput");
-const reminderInput = document.getElementById("reminderInput");
+const yearDownBtn = document.getElementById("yearDown");
+const yearUpBtn = document.getElementById("yearUp");
+const yearDisplay = document.getElementById("yearDisplay");
+const monthInput = document.getElementById("monthInput");
+const dateInput = document.getElementById("dateInput");
+const hourInput = document.getElementById("hourInput");
+const minuteInput = document.getElementById("minuteInput");
 const todoList = document.getElementById("todoList");
 const template = document.getElementById("todoItemTemplate");
 const clearDoneBtn = document.getElementById("clearDone");
@@ -17,15 +23,73 @@ const streakCount = document.getElementById("streakCount");
 
 let todos = loadTodos();
 let reminderTimers = new Map();
+let selectedYear = new Date().getFullYear();
 
 init();
 
 function init() {
+  initReminderBuilder();
   render();
   scheduleAllReminders();
   updateNotificationStatus();
   updateStreak(false);
 }
+
+function initReminderBuilder() {
+  yearDisplay.textContent = `${selectedYear}年`;
+
+  for (let month = 1; month <= 12; month += 1) {
+    monthInput.add(new Option(`${String(month).padStart(2, "0")}月`, String(month).padStart(2, "0")));
+  }
+
+  for (let hour = 0; hour <= 23; hour += 1) {
+    hourInput.add(new Option(String(hour).padStart(2, "0"), String(hour).padStart(2, "0")));
+  }
+
+  minuteInput.add(new Option("00 (前半)", "00"));
+  minuteInput.add(new Option("30 (後半)", "30"));
+
+  const now = new Date();
+  monthInput.value = String(now.getMonth() + 1).padStart(2, "0");
+  hourInput.value = String(now.getHours()).padStart(2, "0");
+  minuteInput.value = now.getMinutes() < 30 ? "00" : "30";
+
+  dateInput.value = "";
+  updateDateInputRange();
+
+  yearDownBtn.addEventListener("click", () => {
+    selectedYear -= 1;
+    yearDisplay.textContent = `${selectedYear}年`;
+    updateDateInputRange();
+  });
+
+  yearUpBtn.addEventListener("click", () => {
+    selectedYear += 1;
+    yearDisplay.textContent = `${selectedYear}年`;
+    updateDateInputRange();
+  });
+}
+
+function updateDateInputRange() {
+  dateInput.min = `${selectedYear}-01-01`;
+  dateInput.max = `${selectedYear}-12-31`;
+
+  if (dateInput.value && !dateInput.value.startsWith(`${selectedYear}-`)) {
+    dateInput.value = `${selectedYear}-${monthInput.value}-01`;
+  }
+}
+
+monthInput.addEventListener("change", () => {
+  if (!dateInput.value) return;
+  const [, , day] = dateInput.value.split("-");
+  dateInput.value = `${selectedYear}-${monthInput.value}-${day ?? "01"}`;
+});
+
+dateInput.addEventListener("change", () => {
+  if (!dateInput.value) return;
+  const [, month] = dateInput.value.split("-");
+  monthInput.value = month;
+});
 
 todoForm.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -33,23 +97,33 @@ todoForm.addEventListener("submit", (event) => {
   const text = taskInput.value.trim();
   if (!text) return;
 
+  const reminderAt = buildReminderISO();
   const todo = {
     id: crypto.randomUUID(),
     text,
     priority: priorityInput.value,
     done: false,
     createdAt: new Date().toISOString(),
-    reminderAt: reminderInput.value ? new Date(reminderInput.value).toISOString() : null,
+    reminderAt,
   };
 
   todos.unshift(todo);
   persistAndRender();
   scheduleReminder(todo);
 
-  todoForm.reset();
+  taskInput.value = "";
   priorityInput.value = "medium";
   toastMotivation("新しいミッションを追加！この勢いでいこう🔥");
 });
+
+function buildReminderISO() {
+  if (!dateInput.value) return null;
+
+  const [, month, day] = dateInput.value.split("-");
+  const composed = `${selectedYear}-${month ?? monthInput.value}-${day ?? "01"}T${hourInput.value}:${minuteInput.value}:00`;
+  const reminderDate = new Date(composed);
+  return Number.isNaN(reminderDate.getTime()) ? null : reminderDate.toISOString();
+}
 
 clearDoneBtn.addEventListener("click", () => {
   todos = todos.filter((todo) => !todo.done);

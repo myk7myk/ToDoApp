@@ -107,13 +107,25 @@ button.ghost {
   justify-content: space-between;
   border: 1px solid var(--border);
   border-radius: 10px;
-  padding: 4px;
+  padding: 6px 8px;
   background: rgba(15, 21, 43, .9);
+  min-height: 46px;
+}
+
+.year-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
 }
 
 .year-stepper button {
-  min-width: 34px;
-  padding: 6px 8px;
+  min-width: 32px;
+  width: 32px;
+  height: 20px;
+  line-height: 1;
+  padding: 0;
+  display: grid;
+  place-items: center;
 }
 
 #yearDisplay {
@@ -139,7 +151,11 @@ button.ghost {
   font-weight: 700;
 }
 
-.row { display: grid; grid-template-columns: minmax(130px, .9fr) minmax(0, 2.6fr) auto; gap: 10px; align-items: center; }
+.row { display: grid; grid-template-columns: 1fr; gap: 10px; align-items: stretch; }
+
+.row > button[type="submit"] {
+  width: 100%;
+}
 .notification-row { margin-top: 12px; display: flex; align-items: center; gap: 10px; color: var(--muted); }
 
 .todo-header { display: flex; justify-content: space-between; align-items: center; }
@@ -174,21 +190,12 @@ button.ghost {
 .delete { background: transparent; border: 1px solid var(--border); color: var(--danger); padding: 6px 10px; }
 
 @media (max-width: 960px) {
-  .row {
-    grid-template-columns: 1fr;
-    align-items: stretch;
-  }
-
   .reminder-builder {
     grid-template-columns: 1fr 1fr;
   }
-
-  .row > button[type="submit"] {
-    width: 100%;
-  }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 640px) {
   .reminder-builder { grid-template-columns: 1fr; }
   .todo-item { align-items: flex-start; flex-direction: column; }
   .todo-meta { justify-content: flex-start; }

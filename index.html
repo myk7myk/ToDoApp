@@ -32,9 +32,11 @@
             </select>
             <div class="reminder-builder" aria-label="リマインダー日時の設定">
               <div class="year-stepper" aria-label="年の設定">
-                <button type="button" id="yearDown" class="ghost">−</button>
                 <span id="yearDisplay"></span>
-                <button type="button" id="yearUp" class="ghost">＋</button>
+                <div class="year-actions">
+                  <button type="button" id="yearUp" class="ghost" aria-label="年を増やす">＋</button>
+                  <button type="button" id="yearDown" class="ghost" aria-label="年を減らす">−</button>
+                </div>
               </div>
               <select id="monthInput" aria-label="月を選択"></select>
               <input id="dateInput" type="date" aria-label="日付を選択" />

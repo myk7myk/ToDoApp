@@ -71,6 +71,12 @@ input, select, button {
   font: inherit;
 }
 
+input,
+select {
+  width: 100%;
+  min-width: 0;
+}
+
 button {
   cursor: pointer;
   font-weight: 700;
@@ -89,9 +95,10 @@ button.ghost {
 
 .reminder-builder {
   display: grid;
-  grid-template-columns: 1.1fr .9fr 1.2fr 1fr;
+  grid-template-columns: minmax(120px, 1.15fr) minmax(90px, .85fr) minmax(150px, 1.15fr) minmax(130px, 1fr);
   gap: 8px;
   align-items: center;
+  min-width: 0;
 }
 
 .year-stepper {
@@ -120,9 +127,11 @@ button.ghost {
 }
 
 .time-split {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 6px;
+  min-width: 0;
 }
 
 .time-split span {
@@ -130,7 +139,7 @@ button.ghost {
   font-weight: 700;
 }
 
-.row { display: grid; grid-template-columns: 1fr 2.3fr auto; gap: 10px; }
+.row { display: grid; grid-template-columns: minmax(130px, .9fr) minmax(0, 2.6fr) auto; gap: 10px; align-items: center; }
 .notification-row { margin-top: 12px; display: flex; align-items: center; gap: 10px; color: var(--muted); }
 
 .todo-header { display: flex; justify-content: space-between; align-items: center; }
@@ -164,8 +173,22 @@ button.ghost {
 .pill.priority.low { color: #bcf6ec; border-color: rgba(3,244,209,.4); }
 .delete { background: transparent; border: 1px solid var(--border); color: var(--danger); padding: 6px 10px; }
 
+@media (max-width: 960px) {
+  .row {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .reminder-builder {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .row > button[type="submit"] {
+    width: 100%;
+  }
+}
+
 @media (max-width: 720px) {
-  .row { grid-template-columns: 1fr; }
   .reminder-builder { grid-template-columns: 1fr; }
   .todo-item { align-items: flex-start; flex-direction: column; }
   .todo-meta { justify-content: flex-start; }
